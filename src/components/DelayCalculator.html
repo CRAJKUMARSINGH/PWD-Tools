@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delay Calculator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 200px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Delay Calculator</h2>
+
+        <div class="input-group">
+            <label for="scheduledStart">Scheduled Start Date:</label>
+            <input type="date" id="scheduledStart">
+        </div>
+
+        <div class="input-group">
+            <label for="scheduledCompletion">Scheduled Completion Date:</label>
+            <input type="date" id="scheduledCompletion">
+        </div>
+
+        <div class="input-group">
+            <label for="actualCompletion">Actual Completion Date:</label>
+            <input type="date" id="actualCompletion">
+        </div>
+
+        <button onclick="calculateDelay()">Calculate Delay</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateDelay() {
+            const scheduledStart = new Date(document.getElementById('scheduledStart').value);
+            const scheduledCompletion = new Date(document.getElementById('scheduledCompletion').value);
+            const actualCompletion = new Date(document.getElementById('actualCompletion').value);
+
+            if (isNaN(scheduledStart) || isNaN(scheduledCompletion) || isNaN(actualCompletion)) {
+                document.getElementById('result').textContent = "Please enter valid dates.";
+                return;
+            }
+
+            if (actualCompletion < scheduledCompletion) {
+                document.getElementById('result').textContent = "Actual completion cannot be before scheduled completion.";
+                return;
+            }
+
+            const delayMilliseconds = actualCompletion - scheduledCompletion;
+
+            const years = Math.floor(delayMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
+            const remainingMilliseconds = delayMilliseconds % (1000 * 60 * 60 * 24 * 365.25);
+            const months = Math.floor(remainingMilliseconds / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((remainingMilliseconds % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+
+            document.getElementById('result').textContent = `Delay: ${years} years, ${months} months, ${days} days`;
+        }
+    </script>
+</body>
+</html>

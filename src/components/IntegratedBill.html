@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>बिल नोट शीट जेनरेटर (हिन्दी)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .section {
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .hidden {
+            display: none;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        button {
+            background-color: #6A1B9A;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #4A148C;
+        }
+        #generatedNote {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #modal > div {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #modal button {
+            padding: 8px 12px; /* Slightly smaller for modal */
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            margin-top: 5px;
+            padding: 5px;
+            width: 200px;
+            border: 1     border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        @media (max-width: 600px) {
+            input, select {
+                width: 100%;
+            }
+            button {
+                width: 100%;
+                margin: 4px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>बिल नोट शीट जेनरेटर (हिन्दी)</h1>
+
+    <form id="billForm">
+        <div class="section">
+            <h2>बिल प्रकार</h2>
+            <label for="billType">बिल का प्रकार</label>
+            <select id="billType" required>
+                <option value="">चुनें...</option>
+                <option value="running">रनिंग बिल</option>
+                <option value="final">फाइनल बिल</option>
+            </select>
+            <p class="error" id="billTypeError">कृपया बिल का प्रकार चुनें</p>
+        </div>
+
+        <div class="section" id="basicInfo">
+            <h2>मूल जानकारी</h2>
+            <label for="workOrderAmount">वर्क ऑर्डर राशि (₹)</label>
+            <input type="number" id="workOrderAmount" min="0" step="0.01" required>
+            <p class="error" id="workOrderAmountError">कृपया मान्य राशि दर्ज करें</p>
+
+            <label for="uptoDateAmount">अब तक (Upto Date) की बिल राशि (₹)</label>
+            <input type="number" id="uptoDateAmount" min="0" step="0.01" required>
+            <p class="error" id="uptoDateAmountError">कृपया मान्य अब तक की बिल राशि दर्ज करें</p>
+
+            <label>Extra Items (Extra Item) शामिल</label>
+            <input type="radio" name="extraItems" value="no" checked> नहीं
+            <input type="radio" name="extraItems" value="yes"> हाँ
+
+            <div id="extraItemsAmountSection" class="hidden">
+                <label for="extraItemsAmount">Extra Items राशि (₹)</label>
+                <input type="number" id="extraItemsAmount" min="0" step="0.01">
+                <p class="error" id="extraItemsAmountError">कृपया मान्य राशि दर्ज करें</p>
+            </div>
+        </div>
+
+        <div class="section final-bill-only hidden" id="projectTimeline">
+            <h2>परियोजना समयरेखा</h2>
+            <label for="startDate">प्रारंभ तिथि (DD/MM/YYYY)</label>
+            <input type="date" id="startDate">
+            <p class="error" id="startDateError">कृपया DD/MM/YYYY प्रारूप में मान्य तिथि चुनें</p>
+
+            <label for="scheduledCompletion">निर्धारित समापन तिथि (DD/MM/YYYY)</label>
+            <input type="date" id="scheduledCompletion">
+            <p class="error" id="scheduledCompletionError">कृपया DD/MM/YYYY प्रारूप में मान्य तिथि चुनें</p>
+
+            <label for="actualCompletion">वास्तविक समापन तिथि (DD/MM/YYYY)</label>
+            <input type="date" id="actualCompletion">
+            <p class="error" id="actualCompletionError">कृपया DD/MM/YYYY प्रारूप में मान्य तिथि चुनें</p>
+        </div>
+
+        <div class="section final-bill-only hidden" id="workDetails">
+            <h2>कार्य विवरण</h2>
+            <label>मरम्मत कार्य</label>
+            <input type="radio" name="repairWork" value="no" checked> नहीं
+            <input type="radio" name="repairWork" value="yes"> हाँ
+
+            <label>अधिक मात्रा (Excess Quantity)</label>
+            <input type="radio" name="excessQuantity" value="no" checked> नहीं
+            <input type="radio" name="excessQuantity" value="yes"> हाँ
+
+            <label>बिल देर से जमा (>6 माह)</label>
+            <input type="radio" name="lateSubmission" value="no" checked> नहीं
+            <input type="radio" name="lateSubmission" value="yes"> हाँ
+        </div>
+
+        <div class="section">
+            <button type="button" onclick="generateNoteSheet()">नोट शीट जनरेट करें</button>
+            <button type="button" onclick="resetForm()">फॉर्म रीसेट करें</button>
+        </div>
+    </form>
+
+    <div class="section">
+        <h2>जनरेटेड नोट</h2>
+        <div id="generatedNote">
+            फॉर्म भरें और "नोट शीट जनरेट करें" पर क्लिक करें।
+        </div>
+        <button onclick="printNote()">नोट प्रिंट करें</button>
+        <button onclick="copyToClipboard()">क्लिपबोर्ड पर कॉपी करें</button>
+    </div>
+
+    <div id="modal" class="hidden">
+        <div>
+            <p id="modalMessage">कृपया आवश्यक फ़ील्ड भरें</p>
+            <button onclick="closeModal()">ठीक है</button>
+        </div>
+    </div>
+
+    <script>
+        const billTypeSelect = document.getElementById('billType');
+        const finalBillFields = document.querySelectorAll('.final-bill-only');
+        const extraItemsRadios = document.querySelectorAll('input[name="extraItems"]');
+        const extraItemsAmountSection = document.getElementById('extraItemsAmountSection');
+        const errors = document.querySelectorAll('.error');
+
+        // Hide errors initially
+        errors.forEach(error => error.style.display = 'none');
+
+        // Toggle fields based on bill type
+        billTypeSelect.addEventListener('change', () => {
+            const isFinalBill = billTypeSelect.value === 'final';
+            finalBillFields.forEach(field => {
+                field.classList.toggle('hidden', !isFinalBill);
+                // Make fields required only for final bill
+                const inputs = field.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.required = isFinalBill;
+                });
+            });
+            // Clear final bill fields when switching to running bill
+            if (!isFinalBill) {
+                document.getElementById('startDate').value = '';
+                document.getElementById('scheduledCompletion').value = '';
+                document.getElementById('actualCompletion').value = '';
+                document.querySelectorAll('input[name="repairWork"]').forEach(r => r.checked = r.value === 'no');
+                document.querySelectorAll('input[name="excessQuantity"]').forEach(r => r.checked = r.value === 'no');
+                document.querySelectorAll('input[name="lateSubmission"]').forEach(r => r.checked = r.value === 'no');
+            }
+        });
+
+        // Toggle Extra Items Amount field based on Extra Items selection
+        extraItemsRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const showAmount = radio.value === 'yes';
+                extraItemsAmountSection.classList.toggle('hidden', !showAmount);
+                const extraItemsAmountInput = document.getElementById('extraItemsAmount');
+                extraItemsAmountInput.required = showAmount;
+                if (!showAmount) extraItemsAmountInput.value = '';
+            });
+        });
+
+        function generateNoteSheet() {
+            // Reset errors
+            errors.forEach(error => error.style.display = 'none');
+
+            const billType = billTypeSelect.value;
+            if (!billType) {
+                document.getElementById('billTypeError').style.display = 'block';
+                showModal('कृपया बिल का प्रकार चुनें');
+                return;
+            }
+
+            const workOrderAmount = document.getElementById('workOrderAmount').value;
+            const uptoDateAmount = document.getElementById('uptoDateAmount').value;
+            const extraItems = document.querySelector('input[name="extraItems"]:checked').value;
+            const extraItemsAmount = document.getElementById('extraItemsAmount').value;
+
+            if (!workOrderAmount || workOrderAmount <= 0) {
+                document.getElementById('workOrderAmountError').style.display = 'block';
+                showModal('कृपया मान्य वर्क ऑर्डर राशि दर्ज करें');
+                return;
+            }
+            if (!uptoDateAmount || uptoDateAmount <= 0) {
+                document.getElementById('uptoDateAmountError').style.display = 'block';
+                showModal('कृपया मान्य अब तक की बिल राशि दर्ज करें');
+                return;
+            }
+            if (extraItems === 'yes' && (!extraItemsAmount || extraItemsAmount <= 0)) {
+                document.getElementById('extraItemsAmountError').style.display = 'block';
+                showModal('कृपया मान्य Extra Items राशि दर्ज करें');
+                return;
+            }
+
+            let note = `बिल प्रकार: ${billType === 'running' ? 'रनिंग बिल' : 'फाइनल बिल'}\n`;
+            note += `वर्क ऑर्डर राशि: ₹${workOrderAmount}\n`;
+            note += `अब तक की बिल राशि: ₹${uptoDateAmount}\n`;
+            note += `Extra Items शामिल: ${extraItems === 'yes' ? 'हाँ' : 'नहीं'}\n`;
+            if (extraItems === 'yes') note += `Extra Items राशि: ₹${extraItemsAmount}\n`;
+
+            if (billType === 'final') {
+                const startDate = document.getElementById('startDate').value;
+                const scheduledCompletion = document.getElementById('scheduledCompletion').value;
+                const actualCompletion = document.getElementById('actualCompletion').value;
+                const repairWork = document.querySelector('input[name="repairWork"]:checked').value;
+                const excessQuantity = document.querySelector('input[name="excessQuantity"]:checked').value;
+                const lateSubmission = document.querySelector('input[name="lateSubmission"]:checked').value;
+
+                if (!startDate) {
+                    document.getElementById('startDateError').style.display = 'block';
+                    showModal('कृपया मान्य प्रारंभ तिथि चुनें');
+                    return;
+                }
+                if (!scheduledCompletion) {
+                    document.getElementById('scheduledCompletionError').style.display = 'block';
+                    showModal('कृपया मान्य निर्धारित समापन तिथि चुनें');
+                    return;
+                }
+                if (!actualCompletion) {
+                    document.getElementById('actualCompletionError').style.display = 'block';
+                    showModal('कृपया मान्य वास्तविक समापन तिथि चुनें');
+                    return;
+                }
+
+                note += `प्रारंभ तिथि: ${startDate}\n`;
+                note += `निर्धारित समापन तिथि: ${scheduledCompletion}\n`;
+                note += `वास्तविक समापन तिथि: ${actualCompletion}\n`;
+                note += `मरम्मत कार्य: ${repairWork === 'yes' ? 'हाँ' : 'नहीं'}\n`;
+                note += `अधिक मात्रा: ${excessQuantity === 'yes' ? 'हाँ' : 'नहीं'}\n`;
+                note += `बिल देर से जमा: ${lateSubmission === 'yes' ? 'हाँ' : 'नहीं'}\n`;
+            }
+
+            document.getElementById('generatedNote').innerText = note;
+        }
+
+        function resetForm() {
+            document.getElementById('billForm').reset();
+            document.getElementById('generatedNote').innerText = 'फॉर्म भरें और "नोट शीट जनरेट करें" पर क्लिक करें।';
+            finalBillFields.forEach(field => field.classList.add('hidden'));
+            extraItemsAmountSection.classList.add('hidden');
+            errors.forEach(error => error.style.display = 'none');
+            billTypeSelect.value = '';
+        }
+
+        function printNote() {
+            const note = document.getElementById('generatedNote').innerText;
+            if (note === 'फॉर्म भरें और "नोट शीट जनरेट करें" पर क्लिक करें।') {
+                showModal('कृपया पहले नोट शीट जनरेट करें');
+                return;
+            }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head><title>नोट शीट</title></head>
+                <body style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>बिल नोट शीट</h2>
+                    <pre>${note}</pre>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function copyToClipboard() {
+            const note = document.getElementById('generatedNote').innerText;
+            if (note === 'फॉर्म भरें और "नोट शीट जनरेट करें" पर क्लिक करें।') {
+                showModal('कृपया पहले नोट शीट जनरेट करें');
+                return;
+            }
+            navigator.clipboard.writeText(note).then(() => {
+                showModal('नोट शीट को क्लिपबोर्ड पर कॉपी कर लिया गया है');
+            }).catch(() => {
+                showModal('कॉपी करने में त्रुटि हुई');
+            });
+        }
+
+        function showModal(message) {
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modalMessage').innerText = 'कृपया आवश्यक फ़ील्ड भरें'; // Reset to default
+        }
+    </script>
+</body>
+</html>

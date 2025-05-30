@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'">
+    <title>Integrated PWD Tools</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <h1>Integrated PWD Tools</h1>
+    <p>Prepared on Initiative of Mrs. Premlata Jain, AAO, PWD Udaipur</p>
+    
+    <div class="button-container">
+        <button onclick="navigateTo('src/components/BillNoteSheet.html')">Bill Note Sheet</button>
+        <button onclick="navigateTo('src/components/DeductionsTable.html')">Deductions Table</button>
+        <button onclick="navigateTo('src/components/DelayCalculator.html')">Delay Calculator</button>
+        <button onclick="navigateTo('src/components/EmdRefund.html')">EMD Refund</button>
+        <button onclick="navigateTo('src/components/SecurityRefund.html')">Security Refund</button>
+        <button onclick="navigateTo('src/components/FinancialProgressTracker.html')">Financial Progress Tracker</button>
+    </div>
+
+    <script>
+        function navigateTo(url) {
+            const button = event.target;
+            try {
+                // Add loading state
+                button.classList.add('loading');
+                button.disabled = true;
+
+                // Navigate to the page
+                window.location.href = url;
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+                // Remove loading state
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
