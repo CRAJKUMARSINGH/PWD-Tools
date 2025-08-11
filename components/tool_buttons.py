@@ -11,8 +11,8 @@ def create_tool_grid():
             "description": "Hand Receipt Generator from Excel files",
             "icon": "📊",
             "category": "financial",
-            "status": "external",
-            "url": "https://marudharhr.onrender.com/",
+            "status": "internal",
+            "url": None,
             "page": "pages/01_Excel_se_EMD.py"
         },
         {
@@ -160,8 +160,8 @@ def show_tool_stats():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("🔗 External Tools", "3", "Connected")
+        st.metric("🔗 External Tools", "2", "Connected")
     with col2:
-        st.metric("🏠 Internal Tools", "7", "Available")
+        st.metric("🏠 Internal Tools", "8", "Available")
     with col3:
         st.metric("📊 Total Categories", "4", "Organized")
