@@ -31,18 +31,6 @@ def main():
     # Create the main tool grid
     create_tool_grid()
     
-    # Simplified sidebar
-    with st.sidebar:
-        st.markdown("### 🔧 Quick Access")
-        
-        if st.button("📊 Excel se EMD", key="quick_emd", use_container_width=True):
-            st.switch_page("pages/01_Excel_se_EMD.py")
-        
-        if st.button("💰 Bill & Deviation", key="quick_bill", use_container_width=True):
-            st.switch_page("pages/02_Bill_Deviation.py")
-        
-        if st.button("📋 Tender Processing", key="quick_tender", use_container_width=True):
-            st.switch_page("pages/03_Tender_Processing.py")
 
 
 

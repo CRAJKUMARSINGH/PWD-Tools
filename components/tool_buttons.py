@@ -136,15 +136,8 @@ def create_tool_button(tool, colors):
     
     st.markdown(button_html, unsafe_allow_html=True)
     
-    # Create clickable button
-    button_key = f"tool_{tool['name'].lower().replace(' ', '_')}"
-    if st.button(f"Open {tool['name']}", key=button_key, use_container_width=True):
-        if tool["status"] == "external" and tool["url"]:
-            # For external tools, navigate to the page which will handle the redirect
-            st.switch_page(tool["page"])
-        else:
-            # For internal tools, navigate directly to the page
-            st.switch_page(tool["page"])
+    # Navigation link (removes extra button clutter)
+    st.page_link(tool["page"], label=f"Open {tool['name']}")
 
 def create_category_filter():
     """Create category filter for tools"""
