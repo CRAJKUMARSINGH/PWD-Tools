@@ -5,7 +5,7 @@ PyInstaller.__main__.run([
     "--name=PwdTools",
     "--noconsole",
     "--onefile",
-    "--add-data=static;static",
+    "--add-data=static:static",
     "--hidden-import=streamlit",
     "--collect-all=streamlit",
     "--collect-all=altair",
