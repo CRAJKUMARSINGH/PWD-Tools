@@ -104,6 +104,15 @@ def create_tool_grid():
             "status": "internal",
             "url": None,
             "page": "pages/10_Stamp_Duty.py"
+        },
+        {
+            "name": "Hand Receipt Generator",
+            "description": "Generate RPWA 28 hand receipts from Excel data",
+            "icon": "📄",
+            "category": "financial",
+            "status": "internal",
+            "url": None,
+            "page": "pages/11_Hand_Receipt_Generator.py"
         }
     ]
     
@@ -166,6 +175,6 @@ def show_tool_stats():
     with col1:
         st.metric("🔗 External Tools", "2", "Connected")
     with col2:
-        st.metric("🏠 Internal Tools", "8", "Available")
+        st.metric("🏠 Internal Tools", "9", "Available")
     with col3:
         st.metric("📊 Total Categories", "4", "Organized")
