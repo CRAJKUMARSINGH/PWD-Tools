@@ -23,13 +23,13 @@ def create_tool_navigation():
         "📊 Excel se EMD": "pages/01_Excel_se_EMD.py",
         "💰 Bill & Deviation": "pages/02_Bill_Deviation.py", 
         "📋 Tender Processing": "pages/03_Tender_Processing.py",
-        "📝 Contract Management": "pages/04_Contract_Management.py",
-        "📋 Work Order System": "pages/05_Work_Order_System.py",
-        "💳 Payment Processing": "pages/06_Payment_Processing.py",
-        "📦 Material Management": "pages/07_Material_Management.py",
-        "✅ Quality Control": "pages/08_Quality_Control.py",
-        "📈 Progress Monitoring": "pages/09_Progress_Monitoring.py",
-        "📄 Report Generator": "pages/10_Report_Generator.py"
+        "📝 Bill Note Sheet": "pages/04_Bill_Note_Sheet.py",
+        "📋 Deductions Table": "pages/05_Deductions_Table.py",
+        "💳 EMD Refund": "pages/07_EMD_Refund.py",
+        "📈 Financial Progress": "pages/08_Financial_Progress.py",
+        "🛡️ Security Refund": "pages/09_Security_Refund.py",
+        ".stamp Duty": "pages/10_Stamp_Duty.py",
+        "🧾 Hand Receipt Generator": "pages/11_Hand_Receipt_Generator.py"
     }
     
     for tool_name, tool_page in tools.items():

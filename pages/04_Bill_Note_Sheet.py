@@ -5,7 +5,7 @@ from utils.navigation import create_breadcrumb, create_back_button
 
 # Page configuration
 st.set_page_config(
-    page_title="Contract Management | PWD Tools Hub",
+    page_title="Bill Note Sheet | PWD Tools Hub",
     page_icon="📝",
     layout="wide"
 )

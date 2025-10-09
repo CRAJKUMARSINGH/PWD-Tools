@@ -1,16 +1,3 @@
-<<<<<<< HEAD
---only-binary=:all:
---prefer-binary
-
-streamlit==1.29.0
-pandas==2.2.2
-numpy==2.0.2
-pillow==10.3.0
-python-dateutil==2.9.0.post0
-pytz==2024.1
-protobuf==4.25.3
-openpyxl==3.1.5
-=======
 streamlit>=1.48.0
 pandas>=2.3.1
 numpy>=2.3.2
@@ -21,4 +8,3 @@ pytz>=2025.2
 protobuf>=6.31.1
 openpyxl>=3.1.5
 xlrd>=2.0.1
->>>>>>> 1f3141c (Your commit message)

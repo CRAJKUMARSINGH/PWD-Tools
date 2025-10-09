@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Overflow Test</title>
+    <style>
+        .test-container {
+            width: 210mm;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+        
+        .test-content {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .long-text {
+            width: 100%;
+            border: 1px dashed #999;
+            padding: 5px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text Overflow Test</h1>
+    
+    <div class="test-container">
+        <h2>Test 1: Long Unbroken String</h2>
+        <div class="long-text test-content">
+            ThisIsAVeryLongStringWithoutSpacesThatShouldWrapProperlyToPreventOverflowFromTheRightMarginOfThePage
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test 2: Long Text with Spaces</h2>
+        <div class="long-text test-content">
+            This is a very long text with spaces that should wrap properly to prevent overflow from the right margin of the page. We are testing to ensure that all content stays within the designated page boundaries.
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test 3: Multiple Long Words</h2>
+        <div class="long-text test-content">
+            ImplementationConfigurationSpecificationDevelopmentOptimization
+        </div>
+    </div>
+</body>
+</html>

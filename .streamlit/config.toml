@@ -1,23 +1,22 @@
 [server]
 port = 8501
-headless = true
-enableCORS = false
-maxUploadSize = 1000
 address = "0.0.0.0"
-
-[browser]
-serverAddress = "0.0.0.0"
-
-[runner]
-fastRerun = true
+enableCORS = false
+enableXsrfProtection = false
+enableWebsocketCompression = false
+maxUploadSize = 200
 
 [theme]
 base = "light"
 primaryColor = "#2E8B57"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F8F5"
-textColor = "#000000"
+textColor = "#262730"
 font = "sans serif"
 
 [client]
-showErrorDetails = false
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[runner]
+fastReruns = true

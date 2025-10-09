@@ -291,19 +291,36 @@ def main():
     records = []
     invalid_rows = []
     for idx, row in df.iterrows():
+        # Initialize amount_raw to ensure it's always defined
+        amount_raw = None
         try:
             payee = str(row[payee_col]).strip()
             work = str(row[work_col]).strip()
             amount_raw = row[amount_col]
+            
+            # Skip rows that contain formatting information or are clearly not data rows
+            # Check if any field contains HTML/CSS formatting indicators
+            if any(indicator in payee.lower() or indicator in work.lower() 
+                   for indicator in ['font-family', 'font-size', 'color:', 'style=', 'class=']):
+                continue  # Skip this row as it contains formatting, not data
             
             # Check for missing values
             if pd.isna(payee) or pd.isna(work) or pd.isna(amount_raw):
                 invalid_rows.append((idx + 2, "Missing required values"))  # +2 for 1-based index and header row
                 continue
                 
+            # Additional check for empty or whitespace-only values
+            if not payee or not work or str(amount_raw).strip() == '':
+                invalid_rows.append((idx + 2, "Empty or whitespace-only values"))
+                continue
+                
             # Try to convert amount to float
             try:
                 amount = float(amount_raw)
+                # Check for invalid amounts
+                if amount <= 0:
+                    invalid_rows.append((idx + 2, f"Invalid amount value (must be positive): {amount_raw}"))
+                    continue
             except (ValueError, TypeError) as e:
                 invalid_rows.append((idx + 2, f"Invalid amount value: {amount_raw} (Error: {str(e)})"))
                 continue
@@ -316,7 +333,8 @@ def main():
         except Exception as e:
             # Only reference variables that are guaranteed to exist
             error_msg = str(e)
-            if 'amount' in error_msg and 'amount_raw' in locals():
+            # Check if amount_raw exists and has a value before using it
+            if amount_raw is not None:
                 error_msg = f"Error processing amount: {amount_raw} - {error_msg}"
             invalid_rows.append((idx + 2, error_msg))
             continue

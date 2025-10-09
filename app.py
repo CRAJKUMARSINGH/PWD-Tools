@@ -1,6 +1,15 @@
 import streamlit as st
 import time
-from utils.branding import apply_custom_css, show_header, show_credits, show_balloons
+import sys
+import os
+
+# Ensure the current directory is in the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
+# Import only the functions we actually use
+from utils.branding import apply_custom_css, show_header, show_credits
 from components.tool_buttons import create_tool_grid
 
 # Page configuration
@@ -30,16 +39,11 @@ def main():
     
     # Create the main tool grid
     create_tool_grid()
-    
 
-
-
-# Main app execution
+# Main app execution - only run when this file is executed directly
 if __name__ == "__main__":
     main()
     
     # Show credits at bottom
     st.markdown("---")
     show_credits()
-    
-
