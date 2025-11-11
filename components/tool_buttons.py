@@ -88,6 +88,14 @@ def create_tool_grid():
             "category": "documentation",
             "status": "internal",
             "page": "pages/13_Main_BAT_Info.py"
+        },
+        {
+            "name": "APG Calculator",
+            "description": "Calculate APG - 50% of savings beyond -15% below G-Schedule",
+            "icon": "🧮",
+            "category": "calculations",
+            "status": "internal",
+            "page": "pages/14_APG_Calculator.py"
         }
     ]
     
