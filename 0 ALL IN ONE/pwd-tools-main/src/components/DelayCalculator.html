@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Delay Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .input-group input[type="date"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f4fc 0%, #f0e8ff 100%);
+            border-radius: 10px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.6;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            padding: 12px 24px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <a href="../../index.html" class="back-btn" style="text-decoration: none; color: white;">
+            <span>←</span> Back to Home
+        </a>
+        <h2>⏱️ Delay Calculator</h2>
+
+        <div class="input-group">
+            <label for="scheduledStart">Scheduled Start Date (dd/mm/yyyy):</label>
+            <input type="date" id="scheduledStart">
+        </div>
+
+        <div class="input-group">
+            <label for="scheduledCompletion">Scheduled Completion Date (dd/mm/yyyy):</label>
+            <input type="date" id="scheduledCompletion">
+        </div>
+
+        <div class="input-group">
+            <label for="actualCompletion">Actual Completion Date (dd/mm/yyyy):</label>
+            <input type="date" id="actualCompletion">
+        </div>
+
+        <button onclick="calculateDelay()">
+            <span>🧮</span> Calculate Delay
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+        function calculateDelay() {
+            const scheduledStartInput = document.getElementById('scheduledStart').value;
+            const scheduledCompletionInput = document.getElementById('scheduledCompletion').value;
+            const actualCompletionInput = document.getElementById('actualCompletion').value;
+
+            const scheduledStart = new Date(scheduledStartInput);
+            const scheduledCompletion = new Date(scheduledCompletionInput);
+            const actualCompletion = new Date(actualCompletionInput);
+
+            if (isNaN(scheduledStart) || isNaN(scheduledCompletion) || isNaN(actualCompletion)) {
+                document.getElementById('result').textContent = "Please enter valid dates.";
+                return;
+            }
+
+            if (actualCompletion < scheduledCompletion) {
+                document.getElementById('result').textContent = "Actual completion cannot be before scheduled completion.";
+                return;
+            }
+
+            const delayMilliseconds = actualCompletion - scheduledCompletion;
+
+            const years = Math.floor(delayMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
+            const remainingMilliseconds = delayMilliseconds % (1000 * 60 * 60 * 24 * 365.25);
+            const months = Math.floor(remainingMilliseconds / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((remainingMilliseconds % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+
+            const formattedScheduledStart = formatDate(scheduledStart);
+            const formattedScheduledCompletion = formatDate(scheduledCompletion);
+            const formattedActualCompletion = formatDate(actualCompletion);
+
+            document.getElementById('result').textContent = `Scheduled Start: ${formattedScheduledStart}, Scheduled Completion: ${formattedScheduledCompletion}, Actual Completion: ${formattedActualCompletion}, Delay: ${years} years, ${months} months, ${days} days`;
+        }
+    </script>
+</body>
+</html>
