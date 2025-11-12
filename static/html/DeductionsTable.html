@@ -26,8 +26,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: var(--light-bg);
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             padding: 20px;
+            min-height: 100vh;
         }
 
         .container {
@@ -35,8 +36,20 @@
             margin: 0 auto;
             padding: 30px;
             background-color: #fff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
@@ -49,7 +62,6 @@
         .header h1 {
             margin-bottom: 10px;
             font-size: 2.2rem;
-            color: #2E8B57;
         }
 
         .header p {
@@ -78,7 +90,7 @@
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d5dfd8;
+            border: 1px solid #ddd;
             border-radius: var(--border-radius);
             font-size: 16px;
             transition: var(--transition);
@@ -86,8 +98,8 @@
 
         input:focus, select:focus {
             outline: none;
-            border-color: #2E8B57;
-            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.15);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .error {
@@ -106,7 +118,7 @@
 
         button {
             padding: 12px 24px;
-            background-color: #2E8B57;
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             border-radius: var(--border-radius);
@@ -119,11 +131,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 14px rgba(46,139,87,0.25);
         }
 
         button:hover {
-            background-color: #228B22;
+            background-color: #2980b9;
             transform: translateY(-2px);
         }
 
@@ -414,19 +425,10 @@
     </style>
 </head>
 <body>
-<script>
-// Celebration balloons
-(function addBalloonStyles(){ if (document.getElementById('balloon-styles')) return; const css = `
-.balloons-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999}
-.balloon{position:absolute;bottom:-10%;width:22px;height:28px;border-radius:50% 50% 45% 45%;opacity:.9;animation:floatUp linear forwards}
-.balloon:after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:2px;height:10px;background:rgba(0,0,0,.2)}
-@keyframes floatUp{to{transform:translateY(-120vh)}}
-`; const style = document.createElement('style'); style.id='balloon-styles'; style.textContent = css; document.head.appendChild(style); })();
-function triggerBalloons(total=24){ const colors=['#2E8B57','#3CB371','#20B2AA','#66CDAA','#90EE90','#32CD32','#228B22','#7FFFD4']; const cont=document.createElement('div'); cont.className='balloons-container'; document.body.appendChild(cont); for(let i=0;i<total;i++){ const b=document.createElement('div'); b.className='balloon'; const size=18+Math.random()*18; b.style.width=size+'px'; b.style.height=size*1.25+'px'; b.style.left=(Math.random()*100)+'%'; const dur=5+Math.random()*3; b.style.animationDuration=dur+'s'; b.style.animationDelay=(Math.random()*0.8)+'s'; b.style.background=colors[Math.floor(Math.random()*colors.length)]; cont.appendChild(b);} setTimeout(()=>{cont.remove();}, 8000); }
-</script>
     <div class="container">
+        <button onclick="window.location.href='../../index.html'" style="background: #95a5a6; margin-bottom: 20px;">← Back to Home</button>
         <div class="header">
-            <h1>Deductions Table Generator</h1>
+            <h1>📉 Deductions Table Generator</h1>
             <p>Calculate all standard deductions for your bill amount</p>
         </div>
 
@@ -707,7 +709,6 @@ function triggerBalloons(total=24){ const colors=['#2E8B57','#3CB371','#20B2AA',
             const successMessage = document.getElementById('successMessage');
             successMessage.textContent = 'Deductions table generated successfully!';
             successMessage.style.display = 'block';
-            try{ triggerBalloons(); triggerConfetti(); }catch(e){}
             
             // Auto-hide success message after 5 seconds
             setTimeout(() => {

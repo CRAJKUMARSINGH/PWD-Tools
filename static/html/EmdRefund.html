@@ -5,65 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=210mm, height=297mm">
     <title>Hand Receipt (RPWA 28)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            width: 210mm;
-            max-width: 210mm;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             width: 210mm;
-            max-width: 210mm;
-            min-height: 297mm;
-            margin: 10mm auto;
+            height: 297mm;
+            margin: 0 auto;
             border: 2px solid #ccc;
             padding: 20px;
             box-sizing: border-box;
             position: relative;
-            page-break-after: never;
-            page-break-inside: avoid;
-            overflow: hidden;
+            page-break-after: avoid;
         }
 
         .header {
             text-align: center;
             margin-bottom: 2px;
-            word-wrap: break-word;
         }
 
         .details {
             margin-bottom: 1px;
-            word-wrap: break-word;
         }
 
         .amount-words {
             font-style: italic;
-            word-wrap: break-word;
         }
 
         .signature-area {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: fixed;
         }
 
         .signature-area td, .signature-area th {
             border: 1px solid #ccc;
             padding: 5px;
             text-align: left;
-            word-wrap: break-word;
         }
 
         .offices {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: fixed;
         }
 
         .offices td, .offices th {
@@ -78,31 +68,15 @@
             padding: 3px;
             width: calc(100% - 10px);
             display: inline-block;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
 
         @media print {
-            html, body {
-                width: 210mm;
-                height: 297mm;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-            }
-
             .container {
                 border: none;
                 width: 210mm;
-                max-width: 210mm;
-                min-height: 297mm;
+                height: 297mm;
                 margin: 0;
-                padding: 20px;
-                page-break-after: never;
-                page-break-inside: avoid;
-                page-break-before: avoid;
-                box-sizing: border-box;
-                overflow: hidden;
+                padding: 10mm;
             }
 
             .input-field {
@@ -111,34 +85,11 @@
 
             body {
                 margin: 0;
-                height: 100%;
-                overflow: hidden;
             }
-            
-            #prompt-container {
-                display: none;
-            }
-            
-            /* Ensure only the first page is printed */
-            .container:not(:first-child) {
-                display: none;
-            }
-            
-            /* Prevent any additional content from appearing */
-            body::after {
-                display: none !important;
-            }
-            
-            /* Ensure the container is visible for printing */
-            .container {
-                display: block !important;
-            }
-            
-            /* Prevent overflow on print */
-            * {
-                overflow: hidden !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
             }
         }
 
@@ -160,7 +111,6 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            overflow: hidden;
         }
 
         .bottom-left-box {
@@ -172,21 +122,14 @@
             width: 300px;
             text-align: left;
             height: auto;
-            max-width: calc(210mm - 80mm);
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
 
         .bottom-left-box p {
             margin: 3px 0;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
 
         .bottom-left-box .blue-text {
             color: blue;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
 
         #prompt-container {
@@ -194,97 +137,89 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #ccc;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             z-index: 1000;
-            max-width: 90vw;
-            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 450px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        #prompt-container h3 {
+            grid-column: span 3;
+            text-align: center;
+            color: #C71585;
+            margin-bottom: 10px;
+            font-size: 1.5em;
         }
 
-        #prompt-container input, #prompt-container button {
-            margin-bottom: 10px;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        
-        #download-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            display: none;
-            max-width: 100%;
-        }
-        
-        #download-button:hover {
-            background-color: #45a049;
-        }
-        
-        #print-button {
-            background-color: #2196F3;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            display: none;
-            max-width: 100%;
-        }
-        
-        #print-button:hover {
-            background-color: #0b7dda;
-        }
-        
-        #auto-download-toggle {
-            margin-top: 10px;
-            display: none;
-        }
-        
-        #auto-download-toggle label {
+        #prompt-container label {
+            grid-column: span 1;
             font-weight: bold;
+            color: #333;
+            align-self: center;
         }
-        
-        /* Additional styles to prevent text overflow */
-        p, h1, h2, h3, h4, h5, h6, span, div {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 100%;
+
+        #prompt-container input {
+            grid-column: span 2;
+            padding: 8px;
+            border: 1px solid #D1D1D1;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
         }
-        
-        table {
-            table-layout: fixed;
-            width: 100%;
+
+        #prompt-container input:focus {
+            border-color: #C71585;
+            outline: none;
         }
-        
-        td, th {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+
+        #prompt-container button {
+            grid-column: span 3;
+            background-color: #C71585;
+            color: #FFFFFF;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #prompt-container button:hover {
+            background-color: #9B0E66;
         }
     </style>
 </head>
 
 <body>
     <div id="prompt-container">
-        <label for="payee">Payee Name:</label><br>
-        <input type="text" id="payee"><br>
-        <label for="amount">Amount:</label><br>
-        <input type="number" id="amount"><br>
-        <label for="work">Name of Work:</label><br>
-        <input type="text" id="work"><br>
+        <h3 style="grid-column: span 3;">💰 EMD Refund Generator</h3>
+        <label for="payee">Payee Name:</label>
+        <input type="text" id="payee">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount">
+        <label for="work">Name of Work:</label>
+        <input type="text" id="work">
         <button id="generate-button">Generate Receipt</button>
-        <button id="print-button" style="display:none;">Print Receipt</button>
-        <button id="download-button" style="display:none;">Download as PDF</button>
-        <div id="auto-download-toggle" style="display:none;">
-            <label>
-                <input type="checkbox" id="auto-download-checkbox" checked> 
-                Auto-download PDF after generation
-            </label>
-        </div>
+        <button onclick="window.location.href='../../index.html'" style="grid-column: span 3; background: #95a5a6; margin-top: 10px;">← Back to Home</button>
     </div>
 
     <div class="container" id="receipt-content"></div>
@@ -342,46 +277,47 @@
             return `
                 <div class="header">
                     <h2>Payable to: - ${payee} ( Electric Contractor)</h2>
-<h2>HAND RECEIPT (RPWA 28)</h2>
-<p>(Referred to in PWF&A Rules 418,424,436 & 438)</p>
-<p>Division - PWD Electric Division, Udaipur</p>
-</div>
-<div class="details">
-<p>(1)Cash Book Voucher No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-<p>(2)Cheque No. and Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-<p>(3) Pay for ECS Rs.${amount}/- (Rupees <span class="amount-words">${amountInWords} only</span>)</p>
-                <p>(4) Paid by me</p>
-                <p>(5) Received from The Executive Engineer PWD Electric Division, Udaipur the sum of Rs. ${amount}/- (Rupees <span class="amount-words">${amountInWords} only</span>)</p>
-                <p> Name of work for which payment is made: <span class="input-field">${work}</span></p>
-                <p> Chargeable to Head:- 8443 [EMD-Refund] </p>   
-                 <table class="signature-area">
-                    <tr>
-                        <td>Witness</td>
-                        <td>Stamp</td>
-                        <td>Signature of payee</td>
-                    </tr>
-                    <tr>
-                        <td>Cash Book No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-  <table class="offices">
-    <tr>
-      <td>For use in the Divisional Office</td>
-      <td>For use in the Accountant General's office</td>
-    </tr>
-    <tr>
-      <td>Checked</td>
-      <td>Audited/Reviewed</td>
-    </tr>
-    <tr>
-      <td>Accounts Clerk</td>
-      <td>
-        DA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Auditor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Supdt. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.O.
-      </td>
-    </tr>
-  </table>
+                    <h2>HAND RECEIPT (RPWA 28)</h2>
+                    <p>(Referred to in PWF&A Rules 418,424,436 & 438)</p>
+                    <p>Division - PWD Electric Division, Udaipur</p>
+                </div>
+                <div class="details">
+                    <p>(1)Cash Book Voucher No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p>(2)Cheque No. and Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p>(3) Pay for ECS Rs.${amount}/- (Rupees <span id="amount-words" class="amount-words">${amountInWords} only</span>)</p>
+                    <p>(4) Paid by me</p>
+                    <p>(5) Received from The Executive Engineer PWD Electric Division, Udaipur the sum of Rs. ${amount}/- (Rupees <span id="amount-words" class="amount-words">${amountInWords} only</span>)</p>
+                    <p> Name of work for which payment is made: <span id="work-name" class="input-field">${work}</span></p>
+                    <p> Chargeable to Head:- 8443 [EMD-Refund] </p>   
+                    <table class="signature-area">
+                        <tr>
+                            <td>Witness</td>
+                            <td>Stamp</td>
+                            <td>Signature of payee</td>
+                        </tr>
+                        <tr>
+                            <td>Cash Book No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page No. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <table class="offices">
+                        <tr>
+                            <td>For use in the Divisional Office</td>
+                            <td>For use in the Accountant General's office</td>
+                        </tr>
+                        <tr>
+                            <td>Checked</td>
+                            <td>Audited/Reviewed</td>
+                        </tr>
+                        <tr>
+                            <td>Accounts Clerk</td>
+                            <td>
+                                DA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Auditor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Supdt. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.O.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="seal-container">
                     <div class="seal">
                         <p></p>
@@ -410,50 +346,13 @@
                 const receiptHTML = generateReceiptHTML(enteredPayee, enteredAmount, enteredWork);
                 document.getElementById('receipt-content').innerHTML = receiptHTML;
                 document.getElementById('prompt-container').style.display = 'none';
-                
-                // Show action buttons
-                const printButton = document.getElementById('print-button');
-                const downloadButton = document.getElementById('download-button');
-                const autoDownloadToggle = document.getElementById('auto-download-toggle');
-                printButton.style.display = 'block';
-                downloadButton.style.display = 'block';
-                autoDownloadToggle.style.display = 'block';
-                
-                printButton.onclick = function() {
+                setTimeout(function() {
                     window.print();
-                };
-                
-                downloadButton.onclick = function() {
-                    downloadPDF(enteredPayee, enteredAmount);
-                };
-                
-                // Auto-download if checkbox is checked
-                const autoDownloadCheckbox = document.getElementById('auto-download-checkbox');
-                if (autoDownloadCheckbox.checked) {
-                    // Small delay to ensure content is fully rendered
-                    setTimeout(function() {
-                        downloadPDF(enteredPayee, enteredAmount);
-                    }, 500);
-                }
+                }, 100);
             } else {
                 alert("Please provide all required information. Amount must be a number.");
             }
         });
-        
-        function downloadPDF(payee, amount) {
-            const element = document.getElementById('receipt-content');
-            const opt = {
-                margin: 1,
-                filename: `EMD_Refund_Receipt_${payee.replace(/\s+/g, '_')}_${amount}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-            
-            // Generate and download PDF
-            html2pdf().set(opt).from(element).save();
-        }
     </script>
 </body>
 </html>

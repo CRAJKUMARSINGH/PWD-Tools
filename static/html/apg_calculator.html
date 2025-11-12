@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APG Calculator</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>APS Calculator</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -35,6 +40,41 @@
             font-size: 0.95em;
             margin-bottom: 25px;
         }
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+        }
         label {
             display: block;
             margin: 15px 0 6px;
@@ -56,18 +96,24 @@
         button {
             margin-top: 25px;
             width: 100%;
-            padding: 14px;
-            background: #3498db;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
         }
         button:hover {
-            background: #2980b9;
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
         #result {
             margin-top: 20px;
@@ -103,30 +149,41 @@
             color: #3498db;
             text-decoration: none;
         }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>APG Calculator</h1>
-        <p class="subtitle">50% of savings beyond -15% below G-Schedule</p>
+        <a href="../../index.html" class="back-btn">
+            <span>←</span> Back to Home
+        </a>
         
+        <h1>APS Calculator</h1>
+        <p class="subtitle">50% of savings beyond -15% below G-Schedule</p>
+
         <label for="gsAmount">G-Schedule Amount (₹)</label>
         <input type="number" id="gsAmount" step="0.01" placeholder="e.g. 100.00" required>
-        
+
         <label for="woAmount">Work Order Amount (₹)</label>
         <input type="number" id="woAmount" step="0.01" placeholder="e.g. 80.00" required>
-        
-        <button id="calcBtn">Calculate APG</button>
-        
-        <div id="result">Enter values to calculate APG</div>
-        
+
+        <button id="calcBtn">
+            <span>🧮</span> Calculate APS
+        </button>
+
+        <div id="result">Enter values to calculate APS</div>
+
         <div class="example">
             <strong>Example:</strong> G-Schedule = 100, Work Order = 80<br>
-            → -20% (5% below -15%) → 5% of 100 = 5 → APG = <strong>3</strong>
+            → -20% (5% below -15%) → 5% of 100 = 5 → APS = <strong>2.50</strong>
         </div>
-        
+
         <div class="footer">
-            Built for <a href="https://x.com/crajkumarsingh1" target="_blank">@crajkumarsingh1</a> • <span id="currentTime"></span>
+            <span id="currentTime"></span>
         </div>
     </div>
 
@@ -142,44 +199,33 @@
             const gsInput = document.getElementById('gsAmount');
             const woInput = document.getElementById('woAmount');
             const resultDiv = document.getElementById('result');
-            
+
             const gs = parseFloat(gsInput.value);
             const wo = parseFloat(woInput.value);
-            
+
             // Validation
             if (isNaN(gs) || isNaN(wo) || gs <= 0 || wo <= 0) {
                 resultDiv.innerHTML = '<span style="color:red;">Please enter valid positive amounts.</span>';
                 return;
             }
-            
+
             // Calculate percentage difference
             const percentDiff = ((wo - gs) / gs) * 100;
             let apg = 0;
-            
+
             if (percentDiff < -15) {
                 const excessBelow = Math.abs(percentDiff) - 15;  // e.g. 20 - 15 = 5
                 const amountBelow = (excessBelow / 100) * gs;   // 5% of 100 = 5
                 apg = 0.5 * amountBelow;                        // 50% of 5 = 2.5
             }
-            
-            // Show result (rounded to nearest integer)
-            resultDiv.innerHTML = `APG = <strong>₹${Math.round(apg)}</strong>`;
-            
+
+            // Show result (rounded off - no decimals)
+            resultDiv.innerHTML = `APS = <strong>₹${Math.round(apg)}</strong>`;
+
             // Optional: Add animation
             resultDiv.style.animation = 'pulse 0.3s';
             setTimeout(() => resultDiv.style.animation = '', 300);
         });
-
-        // Add pulse animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>

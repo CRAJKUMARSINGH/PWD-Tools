@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>बिल नोट शीट जेनरेटर (हिन्दी)</title>
     <style>
         :root {
-            --primary-color: #2E8B57;
-            --secondary-color: #228B22;
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
             --error-color: #e74c3c;
             --success-color: #2ecc71;
             --border-color: #ddd;
@@ -22,7 +25,8 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
         }
         
         h2 {
@@ -31,14 +35,25 @@
             margin-bottom: 30px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--primary-color);
-            letter-spacing: .3px;
         }
         
         .form-container {
-            background: linear-gradient(180deg, #ffffff 0%, #f9fffb 100%);
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .form-group {
@@ -98,31 +113,39 @@
         }
         
         button {
-            padding: 12px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
         }
         
         .btn-primary {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
         
         .btn-primary:hover {
-            background-color: var(--secondary-color);
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
         
         .btn-secondary {
-            background-color: #95a5a6;
+            background: #95a5a6;
             color: white;
         }
         
         .btn-secondary:hover {
-            background-color: #7f8c8d;
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
         }
         
         #output {
@@ -139,7 +162,7 @@
         }
         
         #outputText {
-            max-width: 185mm;
+            max-width: 170mm;
             max-height: 257mm;
             overflow-wrap: break-word;
             word-break: break-all;
@@ -235,7 +258,10 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>बिल नोट शीट जेनरेटर (हिन्दी)</h2>
+        <button class="btn-secondary" onclick="window.location.href='../../index.html'" style="margin-bottom: 20px;">
+            <span>←</span> Back to Home
+        </button>
+        <h2>📄 बिल नोट शीट जेनरेटर (हिन्दी)</h2>
         
         <div class="section-title">बिल प्रकार</div>
         <div class="form-group">
@@ -323,16 +349,24 @@
         </div>
         
         <div class="button-group">
-            <button class="btn-primary" id="generateBtn" onclick="generateNote()">नोट शीट जनरेट करें</button>
-            <button class="btn-secondary" id="resetBtn" onclick="resetForm()">फॉर्म रीसेट करें</button>
+            <button class="btn-primary" id="generateBtn" onclick="generateNote()">
+                <span>✨</span> नोट शीट जनरेट करें
+            </button>
+            <button class="btn-secondary" id="resetBtn" onclick="resetForm()">
+                <span>🔄</span> फॉर्म रीसेट करें
+            </button>
         </div>
         
         <div id="output" style="display: none;">
             <div class="section-title">जनरेटेड नोट</div>
             <div id="outputText">फॉर्म भरें और "नोट शीट जनरेट करें" पर क्लिक करें।</div>
             <div class="button-group" id="actionButtons" style="display: none;">
-                <button class="btn-primary" id="printBtn" onclick="printNote()">नोट प्रिंट करें</button>
-                <button class="btn-secondary" id="copyBtn" onclick="copyToClipboard()">क्लिपबोर्ड पर कॉपी करें</button>
+                <button class="btn-primary" id="printBtn" onclick="printNote()">
+                    <span>🖨️</span> नोट प्रिंट करें
+                </button>
+                <button class="btn-secondary" id="copyBtn" onclick="copyToClipboard()">
+                    <span>📋</span> क्लिपबोर्ड पर कॉपी करें
+                </button>
             </div>
         </div>
         
@@ -347,14 +381,6 @@
     </div>
 
     <script>
-        // Celebration balloons
-        (function addBalloonStyles(){ if (document.getElementById('balloon-styles')) return; const css = `
-.balloons-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999}
-.balloon{position:absolute;bottom:-10%;width:22px;height:28px;border-radius:50% 50% 45% 45%;opacity:.9;animation:floatUp linear forwards}
-.balloon:after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:2px;height:10px;background:rgba(0,0,0,.2)}
-@keyframes floatUp{to{transform:translateY(-120vh)}}
-`; const style = document.createElement('style'); style.id='balloon-styles'; style.textContent = css; document.head.appendChild(style); })();
-        function triggerBalloons(total=24){ const colors=['#2E8B57','#3CB371','#20B2AA','#66CDAA','#90EE90','#32CD32','#228B22','#7FFFD4']; const cont=document.createElement('div'); cont.className='balloons-container'; document.body.appendChild(cont); for(let i=0;i<total;i++){ const b=document.createElement('div'); b.className='balloon'; const size=18+Math.random()*18; b.style.width=size+'px'; b.style.height=size*1.25+'px'; b.style.left=(Math.random()*100)+'%'; const dur=5+Math.random()*3; b.style.animationDuration=dur+'s'; b.style.animationDelay=(Math.random()*0.8)+'s'; b.style.background=colors[Math.floor(Math.random()*colors.length)]; cont.appendChild(b);} setTimeout(()=>{cont.remove();}, 8000); }
         // DOM Elements
         const billTypeSelect = document.getElementById('billType');
         const extraItemSelect = document.getElementById('extraItem');
@@ -553,23 +579,13 @@
                 const delayComment = document.getElementById('delayComment').value;
 
                 note += `${serialNumber++}. कार्य ${percentageWorkDone.toFixed(2)}% पूर्ण हुआ है।\n`;
-
-            if (percentageWorkDone < 90) {
-                note += `${serialNumber}. कार्य का वांछित Deviation Statement भी स्वीकृति हेतु प्राप्त हुआ है, जिसकी स्वीकृति इसी कार्यालय के क्षेत्राधिकार में निहित है।\n`;
-                serialNumber++;
-            } else if (percentageWorkDone > 90 && percentageWorkDone <= 100) {
-                note += `${serialNumber}.  कार्य पूर्णता का प्रतिशत (${percentageWorkDone.toFixed(2)}%) 90% से अधिक किंतु 100% तक है।\n`;
-                serialNumber++;
-            } else if (percentageWorkDone === 100) {
-                note += `${serialNumber}. कार्य  (${percentageWorkDone.toFixed(2)}%) पूर्ण हुआ है। \n`;
-                serialNumber++;
-            } else if (percentageWorkDone > 100 && percentageWorkDone <= 105) {
-                note += `${serialNumber}. कार्य का वांछित Deviation Statement भी स्वीकृति हेतु प्राप्त हुआ है, Overall Excess कार्य की मात्रा 5% से कम/बराबर है, जिसकी स्वीकृति इसी कार्यालय के क्षेत्राधिकार में निहित है।\n`;
-                serialNumber++;
-            } else if (percentageWorkDone > 105) {
-                note += `${serialNumber}. कार्य का वांछित Deviation Statement भी स्वीकृति हेतु प्राप्त हुआ है, Overall Excess कार्य की मात्रा 5% से अधिक है, जिसकी स्वीकृति Superintending Engineer, PWD Electric Circle, Udaipur के क्षेत्राधिकार में निहित है।\n`;
-                serialNumber++;
-            }
+                if (percentageWorkDone < 90) {
+                    note += `${serialNumber}. कार्य का वांछित Deviation Statement भी स्वीकृति हेतु प्राप्त हुआ है, जिसकी स्वीकृति इसी कार्यालय के क्षेत्राधिकार में निहित है।\n`;
+                    serialNumber++;
+                } else if (percentageWorkDone > 100) {
+                    note += `${serialNumber}. कार्य का वांछित Deviation Statement भी स्वीकृति हेतु प्राप्त हुआ है, OVERALL EXCESS वर्क आर्डर राशि के 5% से कम/बराबर है जिसकी स्वीकृति इसी कार्यालय के क्षेत्राधिकार में निहित है।\n`;
+                    serialNumber++;
+                }
 
                 let delayDays = Math.floor((actualCompletion - scheduleCompletion) / (1000 * 60 * 60 * 24));
                 if (actualCompletion > scheduleCompletion) {
@@ -623,7 +639,6 @@
             outputElement.style.display = 'block';
             actionButtons.style.display = 'flex';
             outputElement.scrollIntoView({ behavior: 'smooth' });
-            try{ triggerBalloons(); }catch(e){}
         }
 
         // Reset form

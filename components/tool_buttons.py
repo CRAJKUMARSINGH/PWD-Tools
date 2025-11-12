@@ -96,6 +96,14 @@ def create_tool_grid():
             "category": "calculations",
             "status": "internal",
             "page": "pages/14_APG_Calculator.py"
+        },
+        {
+            "name": "Delay Calculator",
+            "description": "Calculate project delays and time extensions",
+            "icon": "⏱️",
+            "category": "calculations",
+            "status": "internal",
+            "page": "pages/15_Delay_Calculator.py"
         }
     ]
     
