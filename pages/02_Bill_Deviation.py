@@ -28,7 +28,7 @@ def main():
                 st.markdown(
                 """
                 <script>
-                    window.open('https://stream-bill-generator-pjzpbb7a9fdxfmpgpg7t4d.streamlit.app/', '_blank');
+                    window.open('https://priyankabill6dec.streamlit.app/', '_blank');
                     (function(){
                       if(!document.getElementById('balloon-styles')){const css=`.balloons-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999}.balloon{position:absolute;bottom:-10%;width:22px;height:28px;border-radius:50% 50% 45% 45%;opacity:.9;animation:floatUp linear forwards}.balloon:after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:2px;height:10px;background:rgba(0,0,0,.2)}@keyframes floatUp{to{transform:translateY(-120vh)}}`;const s=document.createElement('style');s.id='balloon-styles';s.textContent=css;document.head.appendChild(s);} 
                       if(!document.getElementById('confetti-styles')){const css2=`.confetti-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999}.confetti{position:absolute;top:-10%;width:8px;height:14px;opacity:.9;animation:confettiFall linear forwards}@keyframes confettiFall{to{transform:translateY(120vh) rotate(720deg)}}`;const s2=document.createElement('style');s2.id='confetti-styles';s2.textContent=css2;document.head.appendChild(s2);} 
@@ -44,7 +44,7 @@ def main():
         
         with col_b:
             if st.button("📋 Copy Link", use_container_width=True):
-                st.code("https://stream-bill-generator-pjzpbb7a9fdxfmpgpg7t4d.streamlit.app/")
+                st.code("https://priyankabill6dec.streamlit.app/")
                 st.success("Link copied!")
                 st.markdown(
                 """
@@ -62,7 +62,7 @@ def main():
                 )
         
         with col_c:
-            st.markdown("🔗 [Direct Link](https://stream-bill-generator-pjzpbb7a9fdxfmpgpg7t4d.streamlit.app/)")
+            st.markdown("🔗 [Direct Link](https://priyankabill6dec.streamlit.app/)")
 
 # Navigation
 create_back_button()

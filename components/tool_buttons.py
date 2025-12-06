@@ -21,7 +21,7 @@ def create_tool_grid():
             "icon": "💰",
             "category": "financial", 
             "status": "external",
-            "url": "https://raj-bill-generator-v01.streamlit.app/",
+            "url": "https://priyankabill6dec.streamlit.app/",
             "page": "pages/02_Bill_Deviation.py"
         },
         {
